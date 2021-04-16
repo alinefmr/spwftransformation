@@ -26,8 +26,8 @@ $definitionName = "Approval - SharePoint 2010"
 $wfScope = "List"
 $isWfEnabled = "TRUE"
 
-$ClientId = "ADD HERE"
-$ClientSecret = "ADD HERE"
+$ClientId = Read-Host -Prompt 'Enter Client Id'
+$ClientSecret = Read-Host -Prompt 'Enter Client Secret'
 
 ################################# End of Variables Area ###########################
 
@@ -45,9 +45,18 @@ foreach ($sp2010wf in $msoResults){
         $list = Get-PnPList -Identity $sp2010wf.'List Id' -Includes WorkflowAssociations
 
         if( $list -ne $null ) {
-            Write-Host "WorkflowAssociations: $($list.WorkflowAssociations.Count)" -BackgroundColor Blue -ForegroundColor White
+            #Write-Host "WorkflowAssociations: $($list.WorkflowAssociations.Count)" -BackgroundColor Blue -ForegroundColor White
+
+            $wfFields = @()
+
+            foreach($p in $list.WorkflowAssociations) 
+            {
+                $wfFields += @{$p.Name = $p.Value}
+            }
+                
         }
     }
+
 }
 
 
